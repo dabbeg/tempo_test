@@ -1,3 +1,4 @@
 from app import app
+from app.config import FLASK_HOST, FLASK_PORT, DEBUG
 
-app.run(host='0.0.0.0', port=5000, debug=True)
+app.run(host=FLASK_HOST, port=FLASK_PORT, debug=DEBUG)
