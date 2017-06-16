@@ -36,8 +36,11 @@ def update_membership(team_id, user_id):
 
     db_helper.remove_membership(team_id, user_id)
 
-    membership = { 'team_id': team_id, 'user_id': user_id, 'role_id': role_id }
-    db_helper.add_membership(membership)
+    # only add into the membership table if role is not default
+    default_role = db_helper.get_default_role()
+    if default_role['id'] != role_id:
+        membership = { 'team_id': team_id, 'user_id': user_id, 'role_id': role_id }
+        db_helper.add_membership(membership)
 
     return jsonify(membership)
 
