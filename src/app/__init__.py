@@ -14,7 +14,5 @@ app.register_blueprint(role_module)
 app.register_blueprint(membership_module)
 
 # Initialize data
-from app.util import init_db
-init_db()
-
-
+from app import db_helper
+db_helper.init_db()

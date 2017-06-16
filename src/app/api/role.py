@@ -1,24 +1,21 @@
 from flask import Blueprint
-from app.util import db_get
-from app.config import DB_ROLES
+from app import db_helper
 import json
 
 role = Blueprint('role', __name__, url_prefix='/api/role')
 
 @role.route('/', methods=['GET'])
 def get_roles():
-    return json.dumps(db_get(DB_ROLES))
+    return json.dumps(db_helper.get_roles())
 
 
-@role.route('/<int:id>', methods=['GET'])
-def get_role(id):
-    roles = db_get(DB_ROLES)
-
-    for role in roles:
-        if role['id'] == id:
-            return json.dumps(role)
+@role.route('/<int:role_id>', methods=['GET'])
+def get_role(role_id):
+    role = db_helper.get_role(role_id)
+    if not role:
+        raise Exception()
 
     # TODO: Add membership list to role
 
-    raise Exception()
+    return json.dumps(role)
 
