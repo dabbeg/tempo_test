@@ -3,7 +3,7 @@ import json
 from app import redis
 from app.config import DB_ROLES
 
-def get_json(url):
+def rest_get(url):
     response = requests.get(url)
     if response.status_code == 200:
         return response.json()
