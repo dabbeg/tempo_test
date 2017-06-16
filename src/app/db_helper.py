@@ -55,6 +55,19 @@ def get_membership(team_id, user_id):
             return membership
     return None
 
+def get_memberships(role_id):
+    memberships = _db_get(DB_MEMBERSHIPS)
+    filtered_memberships = []
+    for membership in memberships:
+        if membership['role_id'] == role_id:
+            filtered_memberships.append({ 'team_id': membership['team_id'], 'user_id': membership['user_id'] })
+    return filtered_memberships
+
+def add_membership(membership):
+    memberships = _db_get(DB_MEMBERSHIPS)
+    memberships.append(membership)
+    _db_set(DB_MEMBERSHIPS, memberships)
+
 def remove_membership(team_id, user_id):
     memberships = _db_get(DB_MEMBERSHIPS)
     for idx, membership in enumerate(memberships):
@@ -63,8 +76,14 @@ def remove_membership(team_id, user_id):
             return True
     return False
 
-def add_membership(membership):
+def remove_memberships_that_exist(mbs):
     memberships = _db_get(DB_MEMBERSHIPS)
-    memberships.append(membership)
-    _db_set(DB_MEMBERSHIPS, memberships)
+
+    for membership in memberships:
+        for idx, mb in enumerate(mbs):
+            if membership['team_id'] == mb['team_id'] and membership['user_id'] == mb['user_id']:
+                del mbs[idx]
+    return mbs
+
+
 
