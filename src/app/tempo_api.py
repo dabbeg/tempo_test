@@ -27,6 +27,9 @@ def get_memberships():
         for user_id in team_expand['members']:
             memberships.append({ 'team_id': team['id'], 'user_id': user_id })
 
+        memberships.append({ 'team_id': team['id'], 'user_id': team_expand['lead'] })
+
+
     return memberships
 
 def membership_exists(team_id, user_id):
