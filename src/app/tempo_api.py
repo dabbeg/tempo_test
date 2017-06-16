@@ -16,3 +16,15 @@ def get_teams():
 def get_team(id):
     url = '{}/team/{}'.format(TEMPO_API_URL, id)
     return rest_get(url)
+
+def get_memberships():
+    memberships = []
+    teams = get_teams()
+
+    for team in teams:
+        team_expand = get_team(team['id'])
+
+        for user_id in team_expand['members']:
+            memberships.append({ 'team_id': team['id'], 'user_id': user_id })
+
+    return memberships
