@@ -1,12 +1,11 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from app import tempo_api, db_helper
-import json
 
 membership = Blueprint('membership', __name__, url_prefix='/api/membership')
 
 @membership.route('/', methods=['GET'])
 def get_memberships():
-    return json.dumps(tempo_api.get_memberships())
+    return jsonify(tempo_api.get_memberships())
 
 
 @membership.route('/<int:team_id>/<int:user_id>', methods=['GET'])
@@ -22,7 +21,7 @@ def get_membership(team_id, user_id):
         role = db_helper.get_default_role()
         role_id = role['id']
 
-    return json.dumps({ 'team_id': team_id, 'user_id': user_id, 'role_id': role_id })
+    return jsonify({ 'team_id': team_id, 'user_id': user_id, 'role_id': role_id })
 
 
 @membership.route('/<int:team_id>/<int:user_id>', methods=['PUT'])
@@ -40,5 +39,5 @@ def update_membership(team_id, user_id):
     membership = { 'team_id': team_id, 'user_id': user_id, 'role_id': role_id }
     db_helper.add_membership(membership)
 
-    return json.dumps(membership)
+    return jsonify(membership)
 

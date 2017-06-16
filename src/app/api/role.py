@@ -1,12 +1,11 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from app import tempo_api, db_helper
-import json
 
 role = Blueprint('role', __name__, url_prefix='/api/role')
 
 @role.route('/', methods=['GET'])
 def get_roles():
-    return json.dumps(db_helper.get_roles())
+    return jsonify(db_helper.get_roles())
 
 
 @role.route('/<int:role_id>', methods=['GET'])
@@ -25,5 +24,5 @@ def get_role(role_id):
 
     role['memberships'] = memberships
 
-    return json.dumps(role)
+    return jsonify(role)
 
