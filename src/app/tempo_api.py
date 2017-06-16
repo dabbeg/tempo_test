@@ -28,3 +28,7 @@ def get_memberships():
             memberships.append({ 'team_id': team['id'], 'user_id': user_id })
 
     return memberships
+
+def membership_exists(team_id, user_id):
+    team = get_team(team_id)
+    return user_id in team['members']
