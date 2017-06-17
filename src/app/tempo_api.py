@@ -34,4 +34,7 @@ def get_memberships():
 
 def membership_exists(team_id, user_id):
     team = get_team(team_id)
-    return user_id in team['members']
+    is_member = user_id in team['members']
+    is_lead = user_id == team['lead']
+
+    return is_member or is_lead
