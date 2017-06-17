@@ -9,3 +9,5 @@ def rest_get(url):
     else:
         raise Exception()
 
+def not_found(msg):
+    return msg, 404

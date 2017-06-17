@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from app import tempo_api, db_helper
+from app import tempo_api, db_helper, util
 
 role = Blueprint('role', __name__, url_prefix='/api/role')
 
@@ -12,7 +12,7 @@ def get_roles():
 def get_role(role_id):
     role = db_helper.get_role(role_id)
     if not role:
-        raise Exception()
+        return util.not_found('Role with id {} was not found.'.format(role_id))
 
     memberships = []
     default_role = db_helper.get_default_role()

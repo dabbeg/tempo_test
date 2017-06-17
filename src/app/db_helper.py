@@ -41,13 +41,6 @@ def get_default_role():
             return role
     return None
 
-def role_exists(role_id):
-    roles = _db_get(DB_ROLES)
-    for role in roles:
-        if role['id'] == role_id:
-            return True
-    return False
-
 def get_membership(team_id, user_id):
     memberships = _db_get(DB_MEMBERSHIPS)
     for membership in memberships:

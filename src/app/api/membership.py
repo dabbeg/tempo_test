@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app import tempo_api, db_helper
+from app import tempo_api, db_helper, util
 
 membership = Blueprint('membership', __name__, url_prefix='/api/membership')
 
@@ -11,7 +11,7 @@ def get_memberships():
 @membership.route('/<int:team_id>/<int:user_id>', methods=['GET'])
 def get_membership(team_id, user_id):
     if not tempo_api.membership_exists(team_id, user_id):
-        raise Exception()
+        return util.not_found('Membership with team id {} and user id {} was not found.'.format(team_id, user_id))
 
     role_id = 0
     membership = db_helper.get_membership(team_id, user_id)
@@ -27,12 +27,12 @@ def get_membership(team_id, user_id):
 @membership.route('/<int:team_id>/<int:user_id>', methods=['PUT'])
 def update_membership(team_id, user_id):
     if not tempo_api.membership_exists(team_id, user_id):
-        raise Exception()
+        return util.not_found('Membership with team id {} and user id {} was not found.'.format(team_id, user_id))
 
     body = request.get_json()
     role_id = body['role_id']
-    if not db_helper.role_exists(role_id):
-        raise Exception()
+    if not db_helper.get_role(role_id):
+        return util.not_found('Role with id {} was not found.'.format(role_id))
 
     db_helper.remove_membership(team_id, user_id)
 
